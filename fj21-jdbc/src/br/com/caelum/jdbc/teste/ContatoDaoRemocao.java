@@ -44,10 +44,14 @@ public class ContatoDaoRemocao {
 		System.out.println("    depois da remocao      ");
 		System.out.println("---------------------------");
 		contatoConsulta = dao.getContato(id);
-		System.out.println(contatoConsulta.getNome());
-		System.out.println(contatoConsulta.getEmail());
-		System.out.println(contatoConsulta.getEndereco());
-		System.out.println(sdf.format(contatoConsulta.getDataNascimento().getTime()));
+		if (contatoConsulta==null){
+			System.out.println("Remoção efetuada com sucesso");
+		} else {
+			System.out.println(contatoConsulta.getNome());
+			System.out.println(contatoConsulta.getEmail());
+			System.out.println(contatoConsulta.getEndereco());
+			System.out.println(sdf.format(contatoConsulta.getDataNascimento().getTime()));
+		}
 	}
 
 }

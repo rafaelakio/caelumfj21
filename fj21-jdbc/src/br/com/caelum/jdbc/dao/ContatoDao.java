@@ -157,6 +157,7 @@ public class ContatoDao {
 	public Contato getContato(Long id) throws DAOException{
 		 PreparedStatement stmt = null;
 		 ResultSet rs = null;
+		 Contato contato = null;
 		 try {
 			 // prepared statement para inserção
 			 stmt = connection.prepareStatement(sqlConsultaContato);
@@ -164,8 +165,9 @@ public class ContatoDao {
 			 
 			 // executa
 			 rs = stmt.executeQuery();
-			 rs.next();
-			 Contato contato = createContatoFromResultSet(rs);
+			 if(rs.next()) {
+				 contato = createContatoFromResultSet(rs);
+			 }
 			 stmt.close();
 			 return contato;
 		 } catch (SQLException e) {
