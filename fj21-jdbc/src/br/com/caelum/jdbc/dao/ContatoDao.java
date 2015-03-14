@@ -10,48 +10,94 @@ import java.util.Calendar;
 import java.util.List;
 
 import br.com.caelum.jdbc.ConnectionFactory;
+import br.com.caelum.jdbc.exception.DAOException;
 import br.com.caelum.jdbc.model.Contato;
 
 
 public class ContatoDao {
 	
-	 private Connection connection;
-	 private String tabela = "contatos";
-	 private String sqlInsert = "insert into " + tabela +
+	private Connection connection;
+	private String tabela = "contatos";
+	private String sqlInsert = "insert into " + tabela +
 				"(nome, email, endereco, dataNascimento)" +
 				" values (?, ?, ?, ?)";
-	 private String sqlLista = "select * from " + tabela;
-	 private String sqlConsultaContato = "select * from " + tabela + " where id = ";
+	private String sqlUpdate = "update " + tabela +
+			" set nome = ?, email = ?, endereco = ?, dataNascimento = ?" +
+			" where id = ?";
+	private String sqlLista = "select * from " + tabela;
+	private String sqlConsultaContato = "select * from " + tabela + " where id = ?";
+	private String sqlLikeNome = "select * from " + tabela + " where nome like ?";
 		
-	 public ContatoDao(){
-		 this.connection = new ConnectionFactory().getConnection();
-	 }
+	public ContatoDao(){
+		this.connection = new ConnectionFactory().getConnection();
+	}
 	 
-	 public void setContato(Contato contato) throws SQLException{
-		 PreparedStatement stmt = null;
-		 try {
-			 // prepared statement para inserção
-			 stmt = connection.prepareStatement(sqlInsert);
+	public void setContato(Contato contato) throws DAOException {
+		PreparedStatement stmt = null;
+		try {
+			if (contato.getId() > 0) {
+				stmt = atualizaContato(contato);
+			} else {
+				stmt = insereContato(contato);
+			}
+		} 
+		finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				throw new DAOException(e);
+			}
+		}
+	}
+	
+	private PreparedStatement insereContato(Contato contato)
+		throws DAOException {
+		try {
+			// prepared statement para inserção
+			PreparedStatement stmt = connection.prepareStatement(sqlInsert);
 			 
-			 // seta os valores
-			 stmt.setString(1, contato.getNome());
-			 stmt.setString(2, contato.getEmail());
-			 stmt.setString(3, contato.getEndereco());
-			 stmt.setDate(4, new Date(
+			// seta os valores
+			stmt.setString(1, contato.getNome());
+			stmt.setString(2, contato.getEmail());
+			stmt.setString(3, contato.getEndereco());
+			stmt.setDate(4, new Date(
 					 contato.getDataNascimento().getTimeInMillis()));
 			 
-			 // executa
-			 if (stmt.executeUpdate() > 0) {
-				 System.out.println("Gravado");
-			 }
-		 } catch (SQLException e) {
-			 throw new RuntimeException(e);
-		 } finally {
-			 stmt.close();
-		 }
-	 }
+			// executa
+			if (stmt.executeUpdate() > 0) {
+				System.out.println("Gravado");
+			}
+			return stmt;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+	
+	private PreparedStatement atualizaContato(Contato contato)
+			throws DAOException {
+			try {
+				// prepared statement para inserção
+				PreparedStatement stmt = connection.prepareStatement(sqlUpdate);
+				 
+				// seta os valores
+				stmt.setString(1, contato.getNome());
+				stmt.setString(2, contato.getEmail());
+				stmt.setString(3, contato.getEndereco());
+				stmt.setDate(4, new Date(
+						 contato.getDataNascimento().getTimeInMillis()));
+				stmt.setLong(5, contato.getId());
+				
+				// executa
+				if (stmt.executeUpdate() > 0) {
+					System.out.println("Gravado");
+				}
+				return stmt;
+			} catch (SQLException e) {
+				throw new DAOException(e);
+			}
+		}
 
-	public List<Contato> getContatos() throws SQLException{
+	public List<Contato> getContatos() throws DAOException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -64,16 +110,20 @@ public class ContatoDao {
 			 stmt.close();
 			 return contatos;
 		 } catch (SQLException e) {
-			 throw new RuntimeException(e);
+			 throw new DAOException(e);
 		 }
 	 }
-	 
-	public Contato getContato(Long id) throws SQLException{
+	
+	/*
+	 * Consulta por id
+	 */
+	public Contato getContato(Long id) throws DAOException{
 		 PreparedStatement stmt = null;
 		 ResultSet rs = null;
 		 try {
 			 // prepared statement para inserção
-			 stmt = connection.prepareStatement(sqlConsultaContato+id);
+			 stmt = connection.prepareStatement(sqlConsultaContato);
+			 stmt.setLong(1, id);
 			 
 			 // executa
 			 rs = stmt.executeQuery();
@@ -82,26 +132,55 @@ public class ContatoDao {
 			 stmt.close();
 			 return contato;
 		 } catch (SQLException e) {
-			 throw new RuntimeException(e);
+			 throw new DAOException(e);
 		 }
 	 }
 	
-	private List<Contato> createContatosFromResultSet(ResultSet rs) throws SQLException {
-		 List<Contato> lista = new ArrayList<Contato>();
-		 while(rs.next()) {
-			 lista.add(createContatoFromResultSet(rs));
+	/*
+	 * Consulta por nome
+	 */
+	public List<Contato> getContato(String nome) throws DAOException{
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			 // prepared statement para inserção
+			 stmt = connection.prepareStatement(sqlLikeNome);
+			 stmt.setString(1, "%" + nome + "%");
+			 
+			 // executa
+			 rs = stmt.executeQuery();
+			 List<Contato> contatos = createContatosFromResultSet(rs);
+			 stmt.close();
+			 return contatos;
+		 } catch (SQLException e) {
+			 throw new DAOException(e);
 		 }
-		 return lista;
 	 }
-
-	private Contato createContatoFromResultSet(ResultSet rs) throws SQLException {
-		Calendar cal = Calendar.getInstance();
-		Contato contato = new Contato();
-		contato.setNome(rs.getString("nome"));
-		contato.setEndereco(rs.getString("endereco"));
-		contato.setEmail(rs.getString("email"));
-		cal.setTime(rs.getDate("dataNascimento"));
-		contato.setDataNascimento(cal);
-		return contato;
+	
+	private List<Contato> createContatosFromResultSet(ResultSet rs) throws DAOException {
+		List<Contato> lista = new ArrayList<>();
+		try {
+			 while(rs.next()) {
+				 lista.add(createContatoFromResultSet(rs));
+			 }
+			 return lista;
+		 } catch (SQLException e) {
+			 throw new DAOException(e);
+		 }
+	 }
+		
+	private Contato createContatoFromResultSet(ResultSet rs) throws DAOException {
+		try {
+			Calendar cal = Calendar.getInstance();
+			Contato contato = new Contato();
+			contato.setNome(rs.getString("nome"));
+			contato.setEndereco(rs.getString("endereco"));
+			contato.setEmail(rs.getString("email"));
+			cal.setTime(rs.getDate("dataNascimento"));
+			contato.setDataNascimento(cal);
+			return contato;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
 	 }
 }

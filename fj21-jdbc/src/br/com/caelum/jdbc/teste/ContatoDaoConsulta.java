@@ -29,12 +29,26 @@ public class ContatoDaoConsulta {
 		
 		System.out.println("------------------------------------");
 		System.out.println("Dados do primeiro contato cadastrado");
+		System.out.println("              por id                ");
 		System.out.println("------------------------------------");
 		Contato contatoConsulta = dao.getContato(1L);
 		System.out.println(contatoConsulta.getNome());
 		System.out.println(contatoConsulta.getEmail());
 		System.out.println(contatoConsulta.getEndereco());
 		System.out.println(sdf.format(contatoConsulta.getDataNascimento().getTime()));
+		
+		
+		System.out.println("-----------------------------");
+		System.out.println("Dados de contatos cadastrados");
+		System.out.println("   com nomes que possuam Ca  ");
+		System.out.println("-----------------------------");
+		contatos = dao.getContato("Ca");
+		for(Contato registro:contatos) {
+			System.out.println(registro.getNome());
+			System.out.println(registro.getEmail());
+			System.out.println(registro.getEndereco());
+			System.out.println(sdf.format(registro.getDataNascimento().getTime()));
+		}
 	}
 
 }
