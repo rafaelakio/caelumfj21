@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -24,6 +25,7 @@ public class ContatoDao {
 	private String sqlUpdate = "update " + tabela +
 			" set nome = ?, email = ?, endereco = ?, dataNascimento = ?" +
 			" where id = ?";
+	private String sqlDelete = "delete from contatos where id = ?";
 	private String sqlLista = "select * from " + tabela;
 	private String sqlConsultaContato = "select * from " + tabela + " where id = ?";
 	private String sqlLikeNome = "select * from " + tabela + " where nome like ?";
@@ -32,21 +34,23 @@ public class ContatoDao {
 		this.connection = new ConnectionFactory().getConnection();
 	}
 	 
-	public void setContato(Contato contato) throws DAOException {
+	public Long setContato(Contato contato) throws DAOException {
 		PreparedStatement stmt = null;
+		Long idAtualizado;
 		try {
-			if (contato.getId() > 0) {
+			if (contato.getId()!=null && !contato.getId().equals(0)) {
+				idAtualizado = contato.getId();
 				stmt = atualizaContato(contato);
 			} else {
 				stmt = insereContato(contato);
+				ResultSet rs = stmt.getGeneratedKeys();
+				rs.next();
+				idAtualizado = Long.valueOf(rs.getInt(1));
 			}
-		} 
-		finally {
-			try {
-				stmt.close();
-			} catch (SQLException e) {
-				throw new DAOException(e);
-			}
+			stmt.close();
+			return idAtualizado;
+		} catch (SQLException e) {
+			throw new DAOException(e);
 		}
 	}
 	
@@ -54,7 +58,7 @@ public class ContatoDao {
 		throws DAOException {
 		try {
 			// prepared statement para inserção
-			PreparedStatement stmt = connection.prepareStatement(sqlInsert);
+			PreparedStatement stmt = connection.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS);
 			 
 			// seta os valores
 			stmt.setString(1, contato.getNome());
@@ -74,7 +78,7 @@ public class ContatoDao {
 	}
 	
 	private PreparedStatement atualizaContato(Contato contato)
-			throws DAOException {
+		throws DAOException {
 			try {
 				// prepared statement para inserção
 				PreparedStatement stmt = connection.prepareStatement(sqlUpdate);
@@ -89,13 +93,46 @@ public class ContatoDao {
 				
 				// executa
 				if (stmt.executeUpdate() > 0) {
-					System.out.println("Gravado");
+					System.out.println("Atualizado");
 				}
 				return stmt;
 			} catch (SQLException e) {
 				throw new DAOException(e);
 			}
+	}
+	
+	private PreparedStatement removeContato(Long id)
+		throws DAOException {
+			try {
+				// prepared statement para inserção
+				PreparedStatement stmt = connection.prepareStatement(sqlDelete);
+				 
+				// seta os valores
+				stmt.setLong(1, id);
+				
+				// executa
+				if (stmt.executeUpdate() > 0) {
+					System.out.println("Deletado");
+				}
+				return stmt;
+			} catch (SQLException e) {
+				throw new DAOException(e);
+			}
+	}
+	
+	public void remove(Long id) throws DAOException {
+		PreparedStatement stmt = null;
+		try {
+			stmt = removeContato(id);
+		} 
+		finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				throw new DAOException(e);
+			}
 		}
+	}
 
 	public List<Contato> getContatos() throws DAOException {
 		PreparedStatement stmt = null;

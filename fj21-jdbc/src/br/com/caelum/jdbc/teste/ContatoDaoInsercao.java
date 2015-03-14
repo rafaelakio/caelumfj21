@@ -2,7 +2,6 @@ package br.com.caelum.jdbc.teste;
 
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.List;
 
 import br.com.caelum.jdbc.dao.ContatoDao;
 import br.com.caelum.jdbc.model.Contato;
@@ -22,9 +21,9 @@ public class ContatoDaoInsercao {
 		ContatoDao dao = new ContatoDao();
 		
 		// metodo elegante
-		dao.setContato(contato);
+		Long id = dao.setContato(contato);
 		
-		System.out.println("Gravado via ContatoDaoTest");
+		System.out.println("Gravado via ContatoDaoTest id = " + id);
 	}
 
 }
