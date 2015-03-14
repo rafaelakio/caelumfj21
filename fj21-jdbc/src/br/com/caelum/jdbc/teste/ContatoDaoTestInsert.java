@@ -2,11 +2,12 @@ package br.com.caelum.jdbc.teste;
 
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.List;
 
 import br.com.caelum.jdbc.dao.ContatoDao;
 import br.com.caelum.jdbc.model.Contato;
 
-public class ContatoDaoTest {
+public class ContatoDaoTestInsert {
 
 	public static void main(String[] args) throws SQLException {
 		// dados para gravacao
@@ -21,10 +22,9 @@ public class ContatoDaoTest {
 		ContatoDao dao = new ContatoDao();
 		
 		// metodo elegante
-		dao.adiciona(contato);
+		dao.setContato(contato);
 		
 		System.out.println("Gravado via ContatoDaoTest");
-
 	}
 
 }
