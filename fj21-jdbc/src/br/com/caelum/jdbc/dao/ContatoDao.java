@@ -12,7 +12,7 @@ import br.com.caelum.jdbc.model.Contato;
 public class ContatoDao {
 	
 	 private Connection connection;
-	 private String sql = "insert into contatos " +
+	 private String sqlInsert = "insert into contatos " +
 				"(nome, email, endereco, dataNascimento)" +
 				" values (?, ?, ?, ?)";
 		
@@ -24,7 +24,7 @@ public class ContatoDao {
 		 PreparedStatement stmt = null;
 		 try {
 			 // prepared statement para inserção
-			 stmt = connection.prepareStatement(sql);
+			 stmt = connection.prepareStatement(sqlInsert);
 			 
 			 // seta os valores
 			 stmt.setString(1, contato.getNome());
