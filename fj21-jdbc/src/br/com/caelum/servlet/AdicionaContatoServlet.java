@@ -42,6 +42,7 @@ public class AdicionaContatoServlet extends HttpServlet {
 			return; // para a execução do metodo
 		}
 		
+		// incluir no servidor via configuracao o class path do conector mysql
 		// monta um objeto contato
 		Contato contato = new Contato();
 		contato.setNome(nome);
