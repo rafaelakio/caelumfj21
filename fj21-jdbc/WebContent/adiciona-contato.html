@@ -1,18 +1,57 @@
 <!DOCTYPE html>
 <html>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <head>
 <meta charset="UTF-8">
 <title>Inclusão de Contatos</title>
 </head>
 <body>
 <h1>Adiciona Contatos</h1>
+utilize o usuario erroRoot para dar uma exception e redirecionar a pagina
 <hr />
-<form action="adicionaContato">
+<!--
+POST:
+Modifica estado no servidor
+nunca é cacheado
+um pouco mais seguro pois envia as requisicoes via payload
+
+GET:
+parametro sao explicitos
+browser usa cache
+bookmark
+buscadores como o google indexa a pagina
+tem um limite de dados enviados na url via queryString
+ -->
+<form action="adicionaContato" method="post" id="formulario">
 	<label for="nome">Nome:</label><input type="text" name="nome"/><br />
 	<label for="email">E-mail:</label><input type="text" name="email"/><br />
 	<label for="endereco">Endereço:</label><input type="text" name="endereco"/><br />
 	<label for="dataNascimento">Data de Nascimento:</label><input type="text" name="dataNascimento"/><br />
-	<input type="submit" value="Gravar" />
+	<input type="submit" value="Gravar GET" id="botaoGET"/><br />
+	<input type="submit" value="Gravar GET em metodo POST" id="botaoGETPOST"/><br />
+	<input type="submit" value="Gravar Service" id="botaoService"/><br />
+	<input type="submit" value="Gravar POST" id="botaoPOST"/>
+	<input type="submit" value="Testa erro 404" id="botao404"/>
 </form>
 </body>
+<script>
+$('#botaoGET').on("click", function(){
+	$('#formulario').attr('method', 'GET');
+});
+$('#botaoPOST').on("click", function(){
+	$('#formulario').attr('method', 'POST');
+});
+$('#botaoGETPOST').on("click", function(){
+	$('#formulario').attr('method', 'GET');
+	$('#formulario').attr('action', 'adicionaContatoPost');
+});
+$('#botaoService').on("click", function(){
+	$('#formulario').attr('method', 'GET');
+	$('#formulario').attr('action', 'adicionaContatoService');
+});
+$('#botao404').on("click", function(){
+	$('#formulario').attr('method', 'GET');
+	$('#formulario').attr('action', 'adicionaContato404');
+});
+</script>
 </html>
