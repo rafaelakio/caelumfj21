@@ -29,6 +29,8 @@ public class ContatoDao {
 	private String sqlLista = "select * from " + tabela;
 	private String sqlConsultaContato = "select * from " + tabela + " where id = ?";
 	private String sqlLikeNome = "select * from " + tabela + " where nome like ?";
+	private String sqlMax = "select max(id) as max from " + tabela;
+	private String sqlInitAutoIncrement = "alter table " + tabela + " auto_increment=?";
 		
 	public ContatoDao(){
 		this.connection = new ConnectionFactory().getConnection();
@@ -222,5 +224,40 @@ public class ContatoDao {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
+	 }
+	
+	public void initAutoIncrement(Long id) throws DAOException {
+		PreparedStatement stmt = null;
+		if (id.equals(0L)){
+			id = getMaxId();
+		}
+		try {
+			 // prepared statement para inserção
+			 stmt = connection.prepareStatement(sqlInitAutoIncrement);
+			 stmt.setLong(1, id);
+			 
+			 // executa
+			 stmt.execute();
+			 stmt.close(); 
+		 } catch (SQLException e) {
+			 throw new DAOException(e);
+		 }
+	 }
+	
+	public Long getMaxId() throws DAOException{
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			 // prepared statement para inserção
+			 stmt = connection.prepareStatement(sqlMax);
+			 
+			 // executa
+			 rs = stmt.executeQuery();
+			 Long id = rs.getLong("max");
+			 stmt.close();
+			 return id;
+		 } catch (SQLException e) {
+			 throw new DAOException(e);
+		 }
 	 }
 }

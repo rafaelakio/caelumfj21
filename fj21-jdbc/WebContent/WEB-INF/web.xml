@@ -20,7 +20,7 @@
     	<location>/erro.html</location>
     </error-page>
     <welcome-file-list>
-    	<welcome-file>index.jsp</welcome-file>
+    	<welcome-file>bemvindo.jsp</welcome-file>
 	</welcome-file-list>
     <session-config>
        <session-timeout>15</session-timeout>
