@@ -212,6 +212,7 @@ public class ContatoDao {
 		try {
 			Calendar cal = Calendar.getInstance();
 			Contato contato = new Contato();
+			contato.setId(rs.getLong("id"));
 			contato.setNome(rs.getString("nome"));
 			contato.setEndereco(rs.getString("endereco"));
 			contato.setEmail(rs.getString("email"));
