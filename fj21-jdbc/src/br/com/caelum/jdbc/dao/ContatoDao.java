@@ -17,6 +17,21 @@ import br.com.caelum.jdbc.model.Contato;
 
 public class ContatoDao {
 	
+	/*
+	 * A versão do java que não necessita do Class.forName é a 6. 
+	 * Porém, o teu container pode não estar implementando a versão 6 do java de forma completa. 
+	 * Aí, então, é preciso utilizar esta chamada
+	 * 
+	 */
+	static {  
+        try {  
+            Class.forName("com.mysql.jdbc.Driver");  
+        } catch (Exception e) {  
+            System.out.println("ERRO");  
+            e.printStackTrace();  
+        }  
+    } 
+	
 	private Connection connection;
 	private String tabela = "contatos";
 	private String sqlInsert = "insert into " + tabela +
