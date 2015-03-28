@@ -26,6 +26,7 @@
 </thead>
 <tbody>
 	<c:forEach var="contato" items="${dao.contatos }" varStatus="id">
+		<fmt:formatDate value="${contato.dataNascimento.time}" pattern="dd/MM/yyyy" var="dataFormatada"/>
 		<tr bgcolor="#${id.count % 2 == 0 ? 'aaee88' : 'ffffff' }" >
 			<td>${contato.id }</td>
 			<td>${contato.nome }</td>
@@ -40,7 +41,7 @@
 					</c:otherwise>
 				</c:choose>
 			</td>
-			<td><fmt:formatDate value="${contato.dataNascimento.time}" pattern="dd/MM/yyyy" /></td>
+			<td>${dataFormatada }</td>
 		</tr>
 	</c:forEach>
 </tbody>

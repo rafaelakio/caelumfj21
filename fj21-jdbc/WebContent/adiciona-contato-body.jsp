@@ -1,30 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib tagdir="/WEB-INF/tags/" prefix="caelum" %>
-<html>
-<head>
-<title>Inclusão de Contatos</title>
-</head>
-<body>
-<c:import url="_header.jsp"/>
-<h2>Adiciona Contatos</h2>
-<hr />
-utilize o usuario erroRoot para dar uma exception e redirecionar a pagina<br/>
-utilize o usuario destroiServlet para destruir o servlet no servidor<br/>
-<!--
-POST:
-Modifica estado no servidor
-nunca é cacheado
-um pouco mais seguro pois envia as requisicoes via payload
-
-GET:
-parametro sao explicitos
-browser usa cache
-bookmark
-buscadores como o google indexa a pagina
-tem um limite de dados enviados na url via queryString
- -->
+<caelum:pagina>
 <form action="adicionaContato" method="post" id="formulario">
 	<table>
 	<tbody>
@@ -61,8 +38,7 @@ tem um limite de dados enviados na url via queryString
 	<input type="submit" value="Gravar GET em metodo POST" id="botaoGETPOST"/>
 	<input type="submit" value="Testa erro 404" id="botao404"/>
 </form>
-<c:import url="_footer.jsp"/>
-</body>
+</caelum:pagina>
 <script>
 $('#botaoGET').on("click", function(){
 	$('#formulario').attr('method', 'GET');
@@ -86,4 +62,3 @@ $("#dataNascimento2").datepicker({
 	dateFormat: "dd/mm/yy"
 });
 </script>
-</html>

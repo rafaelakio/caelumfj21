@@ -7,7 +7,7 @@
 <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
 Your browser does not support the HTML5 canvas tag.
 </canvas>
-<label id="lb1"/>
+<label id="lb1"></label>
 <input id="ip1"/>
 <div style="width: 300px; border-color:blue;
   border-style:solid; border-width:1;">
@@ -15,11 +15,40 @@ Your browser does not support the HTML5 canvas tag.
   <span id="long">Long span that wraps withing this div.</span>
 </div>
 
+<div style="width: 300px; border-color:blue;
+  border-style:solid; border-width:1; height: 50px;" id="divTeste">
+</div>
+<label id="lbX"></label>
+<label id="lbY"></label>
+
 <div id="box" style="position: absolute; border-color: red;
   border-width: 1; border-style: solid; z-index: 10">
 </div>
 
 <script>
+$( "#divTeste" ).on('mousemove', function( event ) {
+	  var pageCoords = "( " + event.pageX + ", " + event.pageY + " )";
+	  var clientCoords = "( " + event.clientX + ", " + event.clientY + " )";
+	  $('#lbX').text(pageCoords);
+	  $('#lbY').text(clientCoords);
+	});
+//boxElement.style.left = (boxLeftPos + speed * direction) + 'px';
+var timeout_id = 0,
+  hold_time = 1000,
+  hold_menu = $('#divTeste'),
+  hold_trigger = $('#divTeste');
+
+hold_menu.hide();
+
+hold_trigger.mousedown(function() {
+    timeout_id = setTimeout(menu_toggle, hold_time);
+}).bind('mouseup mouseleave', function() {
+    clearTimeout(timeout_id);
+});
+
+function menu_toggle() {
+  hold_menu.toggle();
+}
   var box = document.getElementById("box");
   var long = document.getElementById("long");
   box.style.left = long.offsetLeft + document.body.scrollLeft + "px";
