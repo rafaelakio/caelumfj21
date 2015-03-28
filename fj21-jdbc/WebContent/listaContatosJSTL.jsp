@@ -11,7 +11,8 @@
 <title>Lista Contatos</title>
 </head>
 <body>
-<h1>tabela com JSTL</h1>
+<c:import url="_header.jsp"/>
+<h2>tabela com JSTL</h2>
 <jsp:useBean id="dao" class="br.com.caelum.jdbc.dao.ContatoDao"/>
 <table border="1">
 <thead>
@@ -29,11 +30,21 @@
 			<td>${contato.id }</td>
 			<td>${contato.nome }</td>
 			<td>${contato.endereco }</td>
-			<td>${contato.email }</td>
+			<td>
+				<c:choose>
+					<c:when test="${empty contato.email }">
+						E-mail não informado
+					</c:when>
+					<c:otherwise>
+						<a href="mailto:${contato.email }">${contato.email }</a>
+					</c:otherwise>
+				</c:choose>
+			</td>
 			<td><fmt:formatDate value="${contato.dataNascimento.time}" pattern="dd/MM/yyyy" /></td>
 		</tr>
 	</c:forEach>
 </tbody>
 </table>
+<c:import url="_footer.jsp"/>
 </body>
 </html>

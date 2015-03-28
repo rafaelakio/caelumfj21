@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+</head>
+<body>
+<canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+<label id="lb1"/>
+<input id="ip1"/>
+<div style="width: 300px; border-color:blue;
+  border-style:solid; border-width:1;">
+  <span>Short span. </span>
+  <span id="long">Long span that wraps withing this div.</span>
+</div>
+
+<div id="box" style="position: absolute; border-color: red;
+  border-width: 1; border-style: solid; z-index: 10">
+</div>
+
+<script>
+  var box = document.getElementById("box");
+  var long = document.getElementById("long");
+  box.style.left = long.offsetLeft + document.body.scrollLeft + "px";
+  box.style.top = long.offsetTop + document.body.scrollTop + "px";
+  box.style.width = long.offsetWidth + "px";
+  box.style.height = long.offsetHeight + "px";
+</script> 
+<script type="text/javascript">
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+ctx.font = "30px Arial";
+ctx.fillText("txt",10,50);
+var topo = canvas.offsetTop;
+$('#myCanvas').on('mouseover', function() {
+	$('#lb1').text(topo);
+	canvas.offsetTop.val($('#ip1'));
+});
+var points = [];
+function getXY(e) {
+    var rect = canvas.getBoundingClientRect();
+    return {x: e.clientX - rect.left, y: e.clientY - rect.top}
+}
+canvas.onmousemove = function(e) {
+	var pos = getXY(e);
+	points.push(pos);
+
+	ctx.beginPath();
+	ctx.moveTo(last.x, last.y);
+	ctx.lineTo(pos.x, pos.y);
+	ctx.stroke();
+
+	last = pos;
+};
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.*,
 				java.text.*,
 				br.com.caelum.jdbc.dao.*,
@@ -11,7 +12,8 @@
 <title>Lista Contatos</title>
 </head>
 <body>
-<h1>tabela com scriptlet</h1>
+<c:import url="_header.jsp"/>
+<h2>tabela com scriptlet</h2>
 <table>
 <thead>
 	<tr>
@@ -40,5 +42,6 @@
 	%>
 </tbody>
 </table>
+<c:import url="_footer.jsp"/>
 </body>
 </html>
