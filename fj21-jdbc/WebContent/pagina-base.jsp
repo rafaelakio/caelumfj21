@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Pagina Base/title>
+<title>Pagina Base</title>
 </head>
 <body>
 <c:import url="_header.jsp"/>

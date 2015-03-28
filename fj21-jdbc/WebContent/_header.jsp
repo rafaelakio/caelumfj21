@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:url value="imagens/caelum.png" var="imagem"/>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-<c:url value="imagens/caelum.png" var="imagem"/>
 <%@ taglib tagdir="/WEB-INF/tags/" prefix="caelum" %>
 <link href="css/jquery.css" rel="stylesheet">
 <table>
@@ -18,9 +18,10 @@
 				</td>
 				<td class="listaMenu">
 					<ul>
-						<li><a href="listaContatos.jsp">listar scriplet</a></li>
-						<li><a href="listaContatosJSTL.jsp">listar JSTL</a></li>
-						<li><a href="adiciona-contato.jsp">adicionar contato</a></li>
+						<li><a href="lista-contatos-scriplet.jsp">listar contatos scriplet</a></li>
+						<li><a href="lista-contatos-jstl.jsp">listar contatos JSTL</a></li>
+						<li><a href="lista-contatos-body.jsp">listar contatos</a></li>
+						<li><a href="adiciona-contato-body.jsp">adicionar contato</a></li>
 					</ul>
 				</td>
 			</tr>
@@ -32,16 +33,20 @@
 <h1>Agenda de Contatos</h1>
 <hr />
 <script type="text/javascript">
+var listaAtiva = false;
 function init(){
-	$('.listaMenu').hide();
+	if(listaAtiva) {
+		$('.listaMenu').hide();
+	}
 }
 init();
-$(document).ready(function() {
-	$('.spanMenu').on('mouseover', function(){
-		$('.listaMenu').show();
-	});
-	$('.divMenu').on('mouseout', function(){
+$('.spanMenu').on('mouseover', function(){
+	$('.listaMenu').show();
+	listaAtiva = true;
+});
+$('.listaMenu').on('mouseout', function(){
+	if(listaAtiva) {
 		$('.listaMenu').hide();
-	});
+	}
 });
 </script>

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.EmptyStackException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,10 +40,23 @@ public class AdicionaContatoServlet extends HttpServlet {
 			Long idGravado = dao.setContato(contato);
 			
 			// imprime o nome do contato que foi adicionado
+			/* codigo comentado conforme explicacao abaixo
 			out.println("<html><body>");
 			out.println("Contato " + contato.getNome() +
 					" adicionado com sucesso via POST");
 			out.println("</body></html>");
+			 */
+			
+			// ao inves de usar o metodo anterior, redirecionaremos a pagina para uma jsp ja existente
+			/* codigo comentado conforme explicacao abaixo
+			RequestDispatcher rd = request.getRequestDispatcher("/lista-contatos-body.jsp");
+			rd.forward(request, response);
+			 * */
+			// o metodo acima, realiza o redirecionamento internamente no server-side
+			// para realizar a alteracao no browser (client side) deve-se utilizar o response conforme abaixo:
+			System.out.println("entrando no send Redirect");
+			response.sendRedirect("lista-contatos-body.jsp");
+			
 		} catch (ParseException e) {
 			out.println("Erro de convesao da data");
 			return; // para a execução do metodo

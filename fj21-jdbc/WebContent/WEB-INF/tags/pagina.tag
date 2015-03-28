@@ -11,8 +11,6 @@
 </head>
 <body>
 <c:import url="_header.jsp"/>
-<h2>Adiciona Contatos</h2>
-<hr />
 <jsp:doBody />
 <c:import url="_footer.jsp"/>
 </body>
