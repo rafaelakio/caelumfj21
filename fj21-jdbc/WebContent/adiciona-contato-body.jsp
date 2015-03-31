@@ -17,7 +17,7 @@ bookmark
 buscadores como o google indexa a pagina
 tem um limite de dados enviados na url via queryString
  -->
-<form action="adicionaContato" method="post" id="formulario">
+<form action="mvc" method="post" id="formulario">
 	<table>
 	<tbody>
 		<tr>
@@ -39,14 +39,11 @@ tem um limite de dados enviados na url via queryString
 		</tr>
 		<tr>
 			<td><label for="dataNascimento">Data de Nascimento:</label></td>
-			<td><input type="text" name="dataNascimento" id="dataNascimento2"/></td>
-		</tr>
-		<tr>
-			<td><label for="dataNascimento">Data de Nascimento taglib:</label></td>
 			<td><caelum:campoData id="dataNascimento"></caelum:campoData></td>
 		</tr>
 	</tbody>
 	</table>
+	<input type="hidden" name="path" value="" id="caminho"/>
 	<input type="submit" value="Gravar GET" id="botaoGET"/>
 	<input type="submit" value="Gravar POST" id="botaoPOST"/>
 	<input type="submit" value="Gravar Service" id="botaoService"/><br />
@@ -56,9 +53,11 @@ tem um limite de dados enviados na url via queryString
 <script type="text/javascript">
 $('#botaoGET').click(function(){
 	$('#formulario').attr('method', 'GET');
+	$('#caminho').val("AdicionarContato");
 });
 $('#botaoPOST').click(function(){
 	$('#formulario').attr('method', 'POST');
+	$('#caminho').val("AdicionarContato");
 });
 $('#botaoGETPOST').click(function(){
 	$('#formulario').attr('method', 'GET');

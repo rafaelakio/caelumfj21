@@ -14,6 +14,8 @@
 	</tr>
 </thead>
 <tbody>
+	<c:if test="${!empty idCriado }">Id Criado: ${idCriado }</c:if>
+	<c:if test="${!empty idExcluido }">Id Excluido: ${idExcluido }</c:if>
 	<c:forEach var="contato" items="${contatos }" varStatus="id">
 		<fmt:formatDate value="${contato.dataNascimento.time}" pattern="dd/MM/yyyy" var="dataFormatada"/>
 		<tr bgcolor="#${id.count % 2 == 0 ? 'aaee88' : 'ffffff' }" >

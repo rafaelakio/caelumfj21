@@ -1,5 +1,7 @@
 package br.com.caelum.mvc.logica;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,6 +19,8 @@ public class AdicionarContatoLogica implements Logica {
 		ContatoDao dao = new ContatoDao();
 		Long idGravado = dao.setContato(contato);
 		req.setAttribute("idCriado", idGravado);
+		List<Contato> contatos = new ContatoDao().getContatos();
+		req.setAttribute("contatos", contatos);
 		return "/lista-contatos-mvc.jsp";
 	}
 

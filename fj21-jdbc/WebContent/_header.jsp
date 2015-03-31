@@ -3,7 +3,7 @@
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <%@ taglib tagdir="/WEB-INF/tags/" prefix="caelum" %>
 <link href="css/jquery.css" rel="stylesheet">
-<c:url value="imagens/caelum111.png" var="imagem"/>
+<c:url value="imagens/caelum.png" var="imagem"/>
 <table>
 	<tr>
 		<td>
@@ -20,7 +20,7 @@
 					<ul>
 						<li><a href="lista-contatos-scriplet.jsp">listar contatos scriplet</a></li>
 						<li><a href="lista-contatos-jstl.jsp">listar contatos JSTL</a></li>
-						<li><a href="lista-contatos-body.jsp">listar contatos</a></li>
+						<li><a href="mvc?path=ListarContatos">listar contatos</a></li>
 						<li><a href="adiciona-contato-body.jsp">adicionar contato</a></li>
 					</ul>
 				</td>
