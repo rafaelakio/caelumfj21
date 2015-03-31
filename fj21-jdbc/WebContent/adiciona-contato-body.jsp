@@ -1,27 +1,4 @@
 <%@ taglib tagdir="/WEB-INF/tags/" prefix="caelum" %>
-<script>
-$('#botaoGET').on("click", function(){
-	$('#formulario').attr('method', 'GET');
-});
-$('#botaoPOST').on("click", function(){
-	$('#formulario').attr('method', 'POST');
-});
-$('#botaoGETPOST').on("click", function(){
-	$('#formulario').attr('method', 'GET');
-	$('#formulario').attr('action', 'adicionaContatoPost');
-});
-$('#botaoService').on("click", function(){
-	$('#formulario').attr('method', 'GET');
-	$('#formulario').attr('action', 'adicionaContatoService');
-});
-$('#botao404').on("click", function(){
-	$('#formulario').attr('method', 'GET');
-	$('#formulario').attr('action', 'adicionaContato404');
-});
-$("#dataNascimento2").datepicker({
-	dateFormat: "dd/mm/yy"
-});
-</script>
 <caelum:pagina>
 <h2>Adiciona Contatos</h2>
 <hr />
@@ -76,4 +53,27 @@ tem um limite de dados enviados na url via queryString
 	<input type="submit" value="Gravar GET em metodo POST" id="botaoGETPOST"/>
 	<input type="submit" value="Testa erro 404" id="botao404"/>
 </form>
+<script type="text/javascript">
+$('#botaoGET').click(function(){
+	$('#formulario').attr('method', 'GET');
+});
+$('#botaoPOST').click(function(){
+	$('#formulario').attr('method', 'POST');
+});
+$('#botaoGETPOST').click(function(){
+	$('#formulario').attr('method', 'GET');
+	$('#formulario').attr('action', 'adicionaContatoPost');
+});
+$('#botaoService').click(function(){
+	$('#formulario').attr('method', 'GET');
+	$('#formulario').attr('action', 'adicionaContatoService');
+});
+$('#botao404').click(function(){
+	$('#formulario').attr('method', 'GET');
+	$('#formulario').attr('action', 'adicionaContato404');
+});
+$("#dataNascimento2").datepicker({
+	dateFormat: "dd/mm/yy"
+});
+</script>
 </caelum:pagina>

@@ -1,9 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:url value="imagens/caelum.png" var="imagem"/>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <%@ taglib tagdir="/WEB-INF/tags/" prefix="caelum" %>
 <link href="css/jquery.css" rel="stylesheet">
+<c:url value="imagens/caelum111.png" var="imagem"/>
 <table>
 	<tr>
 		<td>
@@ -33,20 +33,13 @@
 <h1>Agenda de Contatos</h1>
 <hr />
 <script type="text/javascript">
-var listaAtiva = false;
 function init(){
-	if(listaAtiva) {
-		$('.listaMenu').hide();
-	}
+	$('.listaMenu').hide();
 }
 init();
-$('.spanMenu').on('mouseover', function(){
+$('.divMenu').hover(function(){
 	$('.listaMenu').show();
-	listaAtiva = true;
-});
-$('.listaMenu').on('mouseout', function(){
-	if(listaAtiva) {
-		$('.listaMenu').hide();
-	}
+}, function() {
+	$('.listaMenu').hide();
 });
 </script>
