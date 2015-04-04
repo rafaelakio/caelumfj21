@@ -5,12 +5,14 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import br.com.caelum.tarefas.modelo.Tarefa;
+import br.com.caelum.jdbc.exception.DAOException;
 import br.com.caelum.tarefas.ConnectionFactory;
+import br.com.caelum.tarefas.modelo.Tarefa;
 
 public class JdbcTarefaDao {
 	
@@ -21,8 +23,11 @@ public class JdbcTarefaDao {
             System.out.println("ERRO");  
             e.printStackTrace();  
         }  
-    } 
+    }
+	private String tabela = "tarefas";
 	private final Connection connection;
+	private String sqlMax = "select max(id) as max from " + tabela;
+	private String sqlInitAutoIncrement = "alter table " + tabela + " auto_increment=?";
 	
 	public JdbcTarefaDao() {
 		try {
@@ -41,10 +46,10 @@ public class JdbcTarefaDao {
 			altera(tarefa);
 		} else {
 			try {
-				stmt = connection.prepareStatement(sql);
+				stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				stmt.setString(1, tarefa.getDescricao());
 				stmt.setBoolean(2, tarefa.isFinalizado());
-				stmt.execute();
+				stmt.executeUpdate();
 				ResultSet rs = stmt.getGeneratedKeys();
 				rs.next();
 				idAtualizado = Long.valueOf(rs.getInt(1));
@@ -67,6 +72,9 @@ public class JdbcTarefaDao {
 			stmt = connection.prepareStatement(sql);
 			stmt.setLong(1, tarefa.getId());
 			stmt.execute();
+			if (tarefa.getId()>=getMaxId()){
+				initAutoIncrement(0L);
+			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -172,4 +180,39 @@ public class JdbcTarefaDao {
 		}
 		return tarefa;
 	}
+	public void initAutoIncrement(Long id) throws DAOException {
+		PreparedStatement stmt = null;
+		if (id.equals(0L)){
+			id = getMaxId();
+		}
+		try {
+			 // prepared statement para inserção
+			 stmt = connection.prepareStatement(sqlInitAutoIncrement);
+			 stmt.setLong(1, id);
+			 
+			 // executa
+			 stmt.execute();
+			 stmt.close(); 
+		 } catch (SQLException e) {
+			 throw new DAOException(e);
+		 }
+	 }
+	
+	public Long getMaxId() throws DAOException{
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			 // prepared statement para inserção
+			 stmt = connection.prepareStatement(sqlMax);
+			 
+			 // executa
+			 rs = stmt.executeQuery();
+			 rs.first();
+			 Long id = rs.getLong("max");
+			 stmt.close();
+			 return id;
+		 } catch (SQLException e) {
+			 throw new DAOException(e);
+		 }
+	 }
 }
