@@ -1,16 +1,22 @@
 <%@ taglib tagdir="/WEB-INF/tags/" prefix="caelum" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <caelum:pagina>
-<h2>Adiciona Contatos</h2>
+<h2><c:if test="${empty contato.id }">Adiciona</c:if>
+<c:if test="${!empty contato.id }">Altera</c:if> Contatos</h2>
 <hr />
 <form action="mvc" method="post" id="formulario">
 	<fmt:formatDate value="${contato.dataNascimento.time}" pattern="dd/MM/yyyy" var="dataFormatada"/>
 	<table>
 	<tbody>
 		<tr>
-			<p> se o id for informado, o contato serão atualizado </p>
+			<c:if test="${empty contato.id }"><td></td><td></td></c:if>
+			<c:if test="${!empty contato.id }">
 			<td><label for="id">Id:</label></td>
-			<td><input type="text" name="id" value="${contato.id }"/></td>
+			<td><label id="id">${contato.id }</label>
+				<input type="hidden" name="id" value="${contato.id }"/>
+			</td>
+			</c:if>
 		</tr>
 		<tr>
 			<td><label for="nome">Nome:</label></td>

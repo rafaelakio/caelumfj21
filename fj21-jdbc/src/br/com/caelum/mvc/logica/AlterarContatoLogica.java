@@ -13,7 +13,6 @@ public class AlterarContatoLogica implements Logica{
 			throws Exception {
 		String idRequest = req.getParameter("id");
 		Contato contato = new Contato();
-		System.out.println(idRequest);
 		if(idRequest!=null&&!idRequest.isEmpty()){
 			Long id = Long.parseLong(idRequest);
 			ContatoDao dao = new ContatoDao();
