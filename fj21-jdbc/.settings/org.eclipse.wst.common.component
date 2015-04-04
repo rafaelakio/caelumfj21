@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="fj21-jdbc">
+    <wb-module deploy-name="fj21-mvc">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="fj21-jdbc"/>
-        <property name="java-output-path" value="/fj21-jdbc/bin"/>
+        <property name="java-output-path" value="/fj21-mvc/bin"/>
+        <property name="context-root" value="fj21-mvc"/>
     </wb-module>
 </project-modules>
