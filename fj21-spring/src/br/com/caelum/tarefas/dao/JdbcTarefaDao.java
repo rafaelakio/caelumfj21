@@ -8,12 +8,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import br.com.caelum.tarefas.modelo.Tarefa;
 import br.com.caelum.tarefas.ConnectionFactory;
 
 public class JdbcTarefaDao {
+	
+	static {  
+        try {  
+            Class.forName("com.mysql.jdbc.Driver");  
+        } catch (Exception e) {  
+            System.out.println("ERRO");  
+            e.printStackTrace();  
+        }  
+    } 
 	private final Connection connection;
-
+	
 	public JdbcTarefaDao() {
 		try {
 			this.connection = new ConnectionFactory().getConnection();
@@ -22,17 +32,27 @@ public class JdbcTarefaDao {
 		}
 	}
 
-	public void adiciona(Tarefa tarefa) {
+	public Long adiciona(Tarefa tarefa) {
+		Long idAtualizado;
 		String sql = "insert into tarefas (descricao, finalizado) values (?,?)";
 		PreparedStatement stmt;
-		try {
-			stmt = connection.prepareStatement(sql);
-			stmt.setString(1, tarefa.getDescricao());
-			stmt.setBoolean(2, tarefa.isFinalizado());
-			stmt.execute();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+		if (tarefa.getId()!=null && !tarefa.getId().equals(0)) {
+			idAtualizado = tarefa.getId();
+			altera(tarefa);
+		} else {
+			try {
+				stmt = connection.prepareStatement(sql);
+				stmt.setString(1, tarefa.getDescricao());
+				stmt.setBoolean(2, tarefa.isFinalizado());
+				stmt.execute();
+				ResultSet rs = stmt.getGeneratedKeys();
+				rs.next();
+				idAtualizado = Long.valueOf(rs.getInt(1));
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
 		}
+		return idAtualizado;
 	}
 
 	public void remove(Tarefa tarefa) {
