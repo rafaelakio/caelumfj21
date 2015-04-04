@@ -16,6 +16,7 @@ public class ContatoFromRequest {
 		throws ParseException, EmptyStackException
 	{
 		// buscando os parametros no request
+		String id = request.getParameter("id");
 		String nome = request.getParameter("nome");
 		String endereco = request.getParameter("endereco");
 		String email = request.getParameter("email");
@@ -32,6 +33,7 @@ public class ContatoFromRequest {
 		// incluir no servidor via configuracao o class path do conector mysql
 		// monta um objeto contato
 		Contato contato = new Contato();
+		contato.setId(Long.parseLong(id));
 		contato.setNome(nome);
 		contato.setEndereco(endereco);
 		contato.setEmail(email);

@@ -31,6 +31,7 @@ public class FrontControllerServlet extends HttpServlet{
 				Class classe = Class.forName(nomeDaClasse);
 				Logica logica = (Logica) classe.newInstance();
 				String pagina = logica.executa(request, response);
+				pagina = "/WEB-INF/jsp"+pagina;
 				
 				request.getRequestDispatcher(pagina).forward(request, response);
 			} catch (Exception e) {

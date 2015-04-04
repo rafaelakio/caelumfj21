@@ -1,5 +1,6 @@
 package br.com.caelum.mvc.logica;
 
+import java.sql.Connection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +17,7 @@ public class AdicionarContatoLogica implements Logica {
 			throws Exception {
 		Contato contato = ContatoFromRequest.converteRequestEmContato(req);
 		// salva o contato
-		ContatoDao dao = new ContatoDao();
+		ContatoDao dao = new ContatoDao((Connection) req.getAttribute("conexao"));
 		Long idGravado = dao.setContato(contato);
 		req.setAttribute("idCriado", idGravado);
 		List<Contato> contatos = new ContatoDao().getContatos();

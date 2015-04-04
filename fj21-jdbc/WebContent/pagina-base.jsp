@@ -8,8 +8,8 @@
 <title>Pagina Base</title>
 </head>
 <body>
-<c:import url="_header.jsp"/>
+<c:import url="WEB-INF/jsp/_header.jsp"/>
 <jsp:doBody />
-<c:import url="_footer.jsp"/>
+<c:import url="WEB-INF/jsp/_footer.jsp"/>
 </body>
 </html>

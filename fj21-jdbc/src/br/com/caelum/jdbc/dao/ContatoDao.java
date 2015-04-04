@@ -47,9 +47,13 @@ public class ContatoDao {
 	private String sqlLikeNome = "select * from " + tabela + " where nome like ?";
 	private String sqlMax = "select max(id) as max from " + tabela;
 	private String sqlInitAutoIncrement = "alter table " + tabela + " auto_increment=?";
-		
+	
 	public ContatoDao(){
 		this.connection = new ConnectionFactory().getConnection();
+	}
+	
+	public ContatoDao(Connection connection){
+		this.connection = connection;
 	}
 	 
 	public Long setContato(Contato contato) throws DAOException {

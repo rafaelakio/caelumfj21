@@ -2,7 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <caelum:pagina>
-<h2>tabela com JSTL</h2>
+<h2>Lista de Contatos Cadastrados</h2>
+<form action="mvc" method="post" id="formulario">
 <table border="1">
 <thead>
 	<tr>
@@ -11,6 +12,7 @@
 		<th>Endereço
 		<th>Email
 		<th>Data de Nascimento
+		<th>Opções
 	</tr>
 </thead>
 <tbody>
@@ -34,10 +36,19 @@
 			</td>
 			<td>${dataFormatada }</td>
 			<td>
-				<a href="mvc?path=RemoverContato&id=${contato.id }">Remover</a>
+				<a href="javascript:sbHref('?path=RemoverContato&id=${contato.id }')">Remover</a>
+				<a href="javascript:sbHref('?path=AlterarContato&id=${contato.id }')">Alterar</a>
 			</td>
 		</tr>
 	</c:forEach>
 </tbody>
 </table>
+</form>
+<script type="text/javascript">
+function sbHref(path){
+	var action = $('#formulario').attr("action");
+	$('#formulario').attr("action", action+path);
+	$('#formulario').submit();
+}
+</script>
 </caelum:pagina>
