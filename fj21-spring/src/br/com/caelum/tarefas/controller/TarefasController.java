@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.caelum.tarefas.dao.JdbcTarefaDao;
 import br.com.caelum.tarefas.modelo.Tarefa;
+import br.com.caelum.tarefas.modelo.Usuario;
 
 @Controller
 public class TarefasController {
@@ -32,6 +34,15 @@ public class TarefasController {
 	
 	public TarefasController() {
 		dao = new JdbcTarefaDao();
+	}
+	
+	@RequestMapping("/tarefas/formulario2")
+	public String formulario2(Tarefa tarefa, Model model){
+		if(tarefa!=null&&tarefa.getId()!=null&&tarefa.getId()>0){
+			tarefa=dao.buscaPorId(tarefa.getId());
+		}
+		geraDadosSessao(model, tarefa);
+		return _urlPadrao;
 	}
 	
 	@RequestMapping("/tarefas/formulario")

@@ -11,7 +11,10 @@
 		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-
+	<!-- duracao de 30 minutos por sessao -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
 	<!-- Declaracao do servlet do Spring MVC abaixo -->
 	<servlet>
 		<servlet-name>springmvc</servlet-name>

@@ -17,20 +17,24 @@
 <body>
 	<div class="container">
 		<header>
-			 <a class="navbar-brand" href="#">
-			 	<img src="${imagem}" />
-			 </a>
-			
-			<br>
-			
-			<nav>
-				<ul class="nav nav-pills">
-					<li role="presentation" ><a href="lista">listar tarefas</a></li>
-					<li role="presentation" ><a href="formulario">adicionar tarefas</a></li>
-				</ul>
+			<nav class="navbar navbar-default navbar-static-top">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="#"> <img src="${imagem}" />
+					</a> <br>
+					<ul class="nav nav-pills">
+						<li role="presentation"><a href="lista">listar tarefas</a></li>
+						<li role="presentation"><a href="formulario">adicionar
+								tarefas</a></li>
+					</ul>
+					<br>
+					<p class="navbar-text navbar-right">Usuário: ${usuarioLogado.login }
+						<a class="navbar-link" href="../login/sair"> (Logout) </a>
+					</p>
+				</div>
 			</nav>
+
 		</header>
-		<br><br>
+		<br> <br>
 
 		<jsp:doBody />
 

@@ -5,20 +5,28 @@
 <caelum:pagina>
 	<h3>Adicionar tarefas</h3>
 	<form action="adiciona" method="post" id="formulario">
-		<a href="" style="display:none" id="linkAdiciona">Adicionar uma nova tarefa</a>
+		<a href="#" style="display: block" id="linkAdiciona">Adicionar uma
+			nova tarefa</a>
 		<div class="boxFormulario">
-			<c:if test="${!empty tarefa.id }">
-				<label>Id: ${tarefa.id }</label>
+			<div class="adicionaFormulario" style="display: none">
+				<c:if test="${!empty tarefa.id }">
+					<label>Id: </label>
+					<label id="lbTarefa">${tarefa.id }</label>
+					<input type="hidden" value="${tarefa.id }" name="id" />
+					<br />
+				</c:if>
+				<label>Descrição:</label>
+				<form:errors path="tarefa.descricao" cssStyle="color:red"></form:errors>
 				<br />
-			</c:if>
-			Descrição:
-			<form:errors path="tarefa.descricao" cssStyle="color:red"></form:errors>
-			<br />
-			<textarea name="descricao" rows="5" cols="100">${tarefa.descricao }</textarea>
-			<br /> <input type="submit" value="Adicionar" id="btSubmit" /> <input
-				type="hidden" value="${tarefa.id }" id="idAtualizado" />
-			<div class="tarefasBox" style="display: none">
-				<br />
+				<textarea name="descricao" rows="5" cols="100">${tarefa.descricao }</textarea>
+				<br /> <input type="hidden" value="${tarefa.finalizado }"
+					name="finalizado" /> <input type="hidden" value="${dataFormatada }"
+					name="dataFinalizacao" /> <input type="submit" value="Adicionar"
+					id="btSubmit" /> <input type="hidden" value="${tarefa.id }"
+					id="idAtualizado" />
+				<div class="tarefasBox" style="display: none">
+					<br />
+				</div>
 			</div>
 			<hr />
 			<table class="table table-bordered table-striped">
@@ -58,30 +66,34 @@
 	</script>
 	<script type="text/javascript">
 		var init = function() {
+			if ($('#lbTarefa').text() != "") {
+				$("#btSubmit").val("Alterar");
+				$("#formulario").attr("action", "altera");
+				$("#h3Tarefas").text("Alterar tarefa");
+				$.post("altera");
+			}
 			if ($('#idAtualizado').val() > 0) {
+				$('#linkAdiciona').attr("style", "display:block");
+				$.ajax({
+					url : "/fj21-spring/tarefas/lista",
+					dataType : 'text',
+					type : 'post',
+					data : $(this).serialize(),
+					success : function(data) {
+						var response = $.parseJSON(data);
+						console.log(response);
+						var template = $('#tarefasTpl').html();
+						var html = Mustache.to_html(template, response);
+						$('#tarefaBody').html(html);
+					}
+				});
 				$('.tarefasBox').attr("style", "display:block");
 			}
 		}
 		init();
-		$("#linkAdiciona").click(function(){
-			$('#boxFormulario').attr("style","display:block");
-			$('#linkAdiciona').attr("style","display:none");
-		});
-		$("#btSubmit").click(function() {
-			$('#linkAdiciona').attr("style","display:block");
-			$.ajax({
-				url : "/fj21-spring/tarefas/adiciona",
-				dataType : 'text',
-				type : 'post',
-				data : $(this).serialize(),
-				success : function(data) {
-					var response = $.parseJSON(data);
-					console.log(response);
-					var template = $('#tarefasTpl').html();
-					var html = Mustache.to_html(template, response);
-					$('#tarefaBody').html(html);
-				}
-			});
+		$("#linkAdiciona").click(function() {
+			$('.adicionaFormulario').attr("style", "display:block");
+			$('#linkAdiciona').attr("style", "display:none");
 		});
 	</script>
 </caelum:pagina>

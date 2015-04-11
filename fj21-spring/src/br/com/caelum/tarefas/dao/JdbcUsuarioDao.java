@@ -4,13 +4,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import br.com.caelum.tarefas.ConnectionFactory;
+import br.com.caelum.tarefas.modelo.Tarefa;
 import br.com.caelum.tarefas.modelo.Usuario;
 
 public class JdbcUsuarioDao {
+	
+	
 	private Connection connection;
-
+	static {  
+        try {  
+            Class.forName("com.mysql.jdbc.Driver");  
+        } catch (Exception e) {  
+            System.out.println("ERRO");  
+            e.printStackTrace();  
+        }  
+    }
 	public JdbcUsuarioDao() {
 		try {
 			connection = new ConnectionFactory().getConnection();
@@ -40,5 +51,23 @@ public class JdbcUsuarioDao {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public Boolean adiciona(Usuario usuario) {
+		String sql = "insert into usuarios (login, senha) values (?,?)";
+		PreparedStatement stmt;
+		if (existeUsuario(usuario)) {
+			return false;
+		} else {
+			try {
+				stmt = connection.prepareStatement(sql);
+				stmt.setString(1, usuario.getLogin());
+				stmt.setString(2, usuario.getSenha());
+				stmt.executeUpdate();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return true;
 	}
 }

@@ -13,12 +13,12 @@
 			<br />
 		</c:if>
 		<label>Descrição:</label>
-		<form:errors path="tarefa.descricao" cssStyle="color:red"></form:errors>
+		<form:errors path="descricao" cssStyle="color:red"></form:errors>
 		<br />
 		<textarea name="descricao" rows="5" cols="100">${tarefa.descricao }</textarea>
 		<br />
 		<input type="hidden" value="${tarefa.finalizado }" name="finalizado"/>
-		<input type="hidden" value="${dataFormatada }" name="dataFinalizacao"/>
+		<input type="hidden" value="${dataFormatada }" name="dataFinalizacaoTexto"/>
 		<input type="submit" value="Adicionar" id="btSubmit" />
 	</form>
 <script type="text/javascript">
