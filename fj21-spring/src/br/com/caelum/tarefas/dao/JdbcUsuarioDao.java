@@ -4,12 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import br.com.caelum.tarefas.ConnectionFactory;
-import br.com.caelum.tarefas.modelo.Tarefa;
 import br.com.caelum.tarefas.modelo.Usuario;
 
+@Repository
 public class JdbcUsuarioDao {
 	
 	
@@ -22,9 +26,12 @@ public class JdbcUsuarioDao {
             e.printStackTrace();  
         }  
     }
-	public JdbcUsuarioDao() {
+	
+	@Autowired
+	public JdbcUsuarioDao(DataSource dataSource) {
 		try {
-			connection = new ConnectionFactory().getConnection();
+			//connection = new ConnectionFactory().getConnection();
+			connection = dataSource.getConnection();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

@@ -12,6 +12,7 @@ public class AutorizadorInterceptor extends HandlerInterceptorAdapter{
 							,	Object controller) throws Exception {
 		String uri = request.getRequestURI();
 		if(	uri.endsWith("loginForm") ||
+			uri.endsWith("cadastraLogin") ||
 			uri.endsWith("efetuaLogin") ||
 			uri.contains("resources")
 				){

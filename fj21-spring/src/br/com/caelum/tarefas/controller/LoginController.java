@@ -2,8 +2,8 @@ package br.com.caelum.tarefas.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.caelum.tarefas.dao.JdbcUsuarioDao;
@@ -16,6 +16,15 @@ public class LoginController {
 	 * criar a tabela ==> create table usuarios (login VARCHAR(255), senha VARCHAR(255));
 	 */
 	
+	/* 
+	 * auto injecao de dependencias pelo spring
+	 */
+	private JdbcUsuarioDao dao;
+	@Autowired
+	public LoginController(JdbcUsuarioDao dao) {
+		this.dao = dao;
+	}
+	
 	@RequestMapping("loginForm")
 	public String loginForm(HttpSession session) {
 		Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
@@ -27,7 +36,7 @@ public class LoginController {
 	
 	@RequestMapping("efetuaLogin")
 	public String efetuaLogin(Usuario usuario, HttpSession session) {
-		if(new JdbcUsuarioDao().existeUsuario(usuario)){
+		if(dao.existeUsuario(usuario)){
 			session.setAttribute("usuarioLogado", usuario);
 			return "redirect:tarefas/lista";
 		}
@@ -36,7 +45,8 @@ public class LoginController {
 	
 	@RequestMapping("cadastraLogin")
 	public String cadastraLogin(Usuario usuario, HttpSession session) {
-		if(new JdbcUsuarioDao().adiciona(usuario)){
+		System.out.println("cadastramento do usuario");
+		if(dao.adiciona(usuario)){
 			session.setAttribute("usuarioLogado", usuario);
 			return "redirect:tarefas/lista";
 		}
